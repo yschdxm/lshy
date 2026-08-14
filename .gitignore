@@ -1,0 +1,66 @@
+# ============================================
+# 通用
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# ============================================
+# 环境变量 / 密钥（任何目录下的 .env 一律忽略）
+# ============================================
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# ============================================
+# Python 后端 (lingshan-ai-guide)
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# 测试 / 覆盖率
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# 数据库与向量库（含演示数据，不入库）
+*.db
+*.sqlite
+*.sqlite3
+**/data/chroma/
+
+# ============================================
+# Next.js 前端 (灵境云游)
+# ============================================
+node_modules/
+.next/
+out/
+
+# 生产构建
+*.tsbuildinfo
+next-env.d.ts
+
+# 包管理器
+.pnpm-store/
+
+# Vercel
+.vercel
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
