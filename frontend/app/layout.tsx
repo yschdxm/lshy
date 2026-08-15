@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 // 自托管字体（npm 包内 woff2），构建无需访问 Google Fonts —— 国内服务器可直接构建
 import '@fontsource-variable/noto-sans-sc'
@@ -24,7 +23,6 @@ export default function RootLayout({
     <html lang="zh-CN" className="light">
       <body className="bg-background font-sans antialiased">
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
