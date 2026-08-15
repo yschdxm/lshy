@@ -3,8 +3,10 @@ import { quickAccess } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
 
 // 需要预填问题的快捷入口
+// 注意：href 中的中文必须 URL 编码，否则 Next.js 客户端导航时会抛
+// "Cannot convert argument to a ByteString"（内部请求头只允许 Latin-1 字符）
 const PREFILL_MAP: Record<string, string> = {
-  '景区开放时间': '/qa?q=灵山胜境的开放时间是几点？',
+  '景区开放时间': `/qa?q=${encodeURIComponent('灵山胜境的开放时间是几点？')}`,
 }
 
 export function QuickAccess() {

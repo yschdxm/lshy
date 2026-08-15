@@ -47,7 +47,7 @@ export function AdminSidebar({
         ) : (
           <div className="leading-tight">
             <div className="flex items-center gap-2.5">
-              <img src="/灵境云游_logo_透明底_裁切版 - 单logo图.png" alt="灵境云游" className="h-8" />
+              <img src="/logo-mark.png" alt="灵境云游" className="h-8" />
               <div>
                 <p className="text-base font-bold text-foreground">灵境云游</p>
                 <p className="text-[11px] text-muted-foreground">管理后台</p>

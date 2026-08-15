@@ -11,7 +11,9 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-AMAP_KEY = settings.amap_key
+# 注意：不在模块 import 时固化 AMAP_KEY。
+# uvicorn --reload 只监听 .py 文件，.env 改动不会触发重载；
+# 每次调用时读取 settings，保证重启/改配置后立刻生效。
 AMAP_BASE = "https://restapi.amap.com/v3"
 
 # 灵山胜境核心坐标
@@ -43,7 +45,7 @@ def search_nearby(location: str, facility_type: str, radius: int = 1000) -> dict
         "location": location,
         "radius": radius,
         "types": types,
-        "key": AMAP_KEY,
+        "key": settings.amap_key,
         "extensions": "base",
     })
     try:
@@ -77,7 +79,7 @@ def get_walking_route(origin: str, destination: str) -> dict:
     params = urllib.parse.urlencode({
         "origin": origin,
         "destination": destination,
-        "key": AMAP_KEY,
+        "key": settings.amap_key,
     })
     try:
         url = f"{AMAP_BASE}/direction/walking?{params}"
@@ -104,14 +106,15 @@ def get_weather_forecast(city: str = "320200") -> dict:
     """获取天气（高德 Adcode: 320200=无锡）"""
     params = urllib.parse.urlencode({
         "city": city,
-        "key": AMAP_KEY,
+        "key": settings.amap_key,
         "extensions": "base",
     })
     try:
         url = f"{AMAP_BASE}/weather/weatherInfo?{params}"
         data = json.loads(urllib.request.urlopen(url, timeout=8).read())
         if data.get("status") != "1":
-            return {"error": "天气获取失败"}
+            # 把高德的原始错误带出来，便于定位（Key 无效/超配额/城市编码错误等）
+            return {"error": f"高德天气接口错误: {data.get('info', '未知')} (infocode={data.get('infocode', '?')})"}
         lives = data.get("lives", [])
         if lives:
             l = lives[0]

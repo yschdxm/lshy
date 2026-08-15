@@ -61,6 +61,58 @@ async def get_active_config(db: Session = Depends(get_db)):
     return DigitalHumanConfigResponse.model_validate(config)
 
 
+# ============================================================
+# 讯飞数字人 WebSocket 签名（apiSecret 仅存服务端）
+# 注意：必须定义在 /{config_id} 之前，否则 "xfyun-auth" 会被当作 int 路径参数 → 422
+# ============================================================
+
+@router.get("/xfyun-auth")
+async def xfyun_auth():
+    """
+    生成讯飞数字人 WebSocket 的临时签名 URL（约 5 分钟有效）
+    前端拿到签名 URL 后直接连接，无需接触 apiSecret
+    """
+    import base64
+    import hashlib
+    import hmac
+    from email.utils import formatdate
+    from urllib.parse import urlencode, urlparse
+
+    from app.core.config import settings
+
+    if not (settings.xfyun_api_key and settings.xfyun_api_secret):
+        raise HTTPException(status_code=503, detail="讯飞数字人服务未配置")
+
+    parsed = urlparse(settings.xfyun_server_url)
+    host = parsed.netloc
+    path = parsed.path
+
+    # RFC1123 英文格式（与前端 SDK 的 Date.toUTCString() 一致，且不受系统区域设置影响）
+    date = formatdate(usegmt=True)
+    signature_origin = f"host: {host}\ndate: {date}\nGET {path} HTTP/1.1"
+    signature = base64.b64encode(
+        hmac.new(
+            settings.xfyun_api_secret.encode("utf-8"),
+            signature_origin.encode("utf-8"),
+            hashlib.sha256,
+        ).digest()
+    ).decode("utf-8")
+
+    authorization_origin = (
+        f'api_key="{settings.xfyun_api_key}", algorithm="hmac-sha256", '
+        f'headers="host date request-line", signature="{signature}"'
+    )
+    authorization = base64.b64encode(authorization_origin.encode("utf-8")).decode("utf-8")
+
+    signed_url = f"{settings.xfyun_server_url}?{urlencode({'authorization': authorization, 'date': date, 'host': host})}"
+
+    return {
+        "server_url": signed_url,
+        "app_id": settings.xfyun_app_id,
+        "scene_id": settings.xfyun_scene_id,
+    }
+
+
 @router.get("/{config_id}", response_model=DigitalHumanConfigResponse)
 async def get_config(config_id: int, db: Session = Depends(get_db)):
     """获取单个数字人配置详情"""
@@ -193,54 +245,3 @@ async def delete_config(config_id: int, db: Session = Depends(get_db)):
     db.delete(config)
     db.commit()
     return {"status": "ok"}
-
-
-# ============================================================
-# 讯飞数字人 WebSocket 签名（apiSecret 仅存服务端）
-# ============================================================
-
-@router.get("/xfyun-auth")
-async def xfyun_auth():
-    """
-    生成讯飞数字人 WebSocket 的临时签名 URL（约 5 分钟有效）
-    前端拿到签名 URL 后直接连接，无需接触 apiSecret
-    """
-    import base64
-    import hashlib
-    import hmac
-    from email.utils import formatdate
-    from urllib.parse import urlencode, urlparse
-
-    from app.core.config import settings
-
-    if not (settings.xfyun_api_key and settings.xfyun_api_secret):
-        raise HTTPException(status_code=503, detail="讯飞数字人服务未配置")
-
-    parsed = urlparse(settings.xfyun_server_url)
-    host = parsed.netloc
-    path = parsed.path
-
-    # RFC1123 英文格式（与前端 SDK 的 Date.toUTCString() 一致，且不受系统区域设置影响）
-    date = formatdate(usegmt=True)
-    signature_origin = f"host: {host}\ndate: {date}\nGET {path} HTTP/1.1"
-    signature = base64.b64encode(
-        hmac.new(
-            settings.xfyun_api_secret.encode("utf-8"),
-            signature_origin.encode("utf-8"),
-            hashlib.sha256,
-        ).digest()
-    ).decode("utf-8")
-
-    authorization_origin = (
-        f'api_key="{settings.xfyun_api_key}", algorithm="hmac-sha256", '
-        f'headers="host date request-line", signature="{signature}"'
-    )
-    authorization = base64.b64encode(authorization_origin.encode("utf-8")).decode("utf-8")
-
-    signed_url = f"{settings.xfyun_server_url}?{urlencode({'authorization': authorization, 'date': date, 'host': host})}"
-
-    return {
-        "server_url": signed_url,
-        "app_id": settings.xfyun_app_id,
-        "scene_id": settings.xfyun_scene_id,
-    }

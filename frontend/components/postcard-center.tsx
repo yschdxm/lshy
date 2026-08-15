@@ -229,8 +229,9 @@ export function PostcardCenter() {
   }, [activeSpot])
 
   // 生成明信片图片（dom-to-image 支持现代 CSS）
+  // 注意：不要与上方 import 的 API 函数 generateImage 重名（会遮蔽导致 AI 生图调用失败）
   const [capturing, setCapturing] = useState(false)  // 截图时隐藏 badge
-  const generateImage = useCallback(async () => {
+  const capturePostcardPng = useCallback(async () => {
     if (!previewRef.current) return
     setGenerating(true); setCapturing(true)
     // 等一帧让 React 隐藏 badge
@@ -244,7 +245,7 @@ export function PostcardCenter() {
 
   // 下载
   const handleDownload = async () => {
-    const dataUrl = await generateImage()
+    const dataUrl = await capturePostcardPng()
     if (!dataUrl) return
     const a = document.createElement('a')
     a.href = dataUrl; a.download = `灵山明信片-${activeSpot.name}.png`; a.click()
@@ -253,7 +254,7 @@ export function PostcardCenter() {
 
   // 分享
   const handleShare = async () => {
-    const dataUrl = await generateImage()
+    const dataUrl = await capturePostcardPng()
     if (!dataUrl) return
     if (navigator.share) {
       const blob = await (await fetch(dataUrl)).blob()
@@ -317,7 +318,7 @@ export function PostcardCenter() {
       } else {
         setBgError('生成失败，请重试')
       }
-    } catch { setBgError('网络异常，请重试') }
+    } catch (e: any) { setBgError(e?.message?.slice(0, 50) || '网络异常，请重试') }
     finally { setBgLoading(false) }
   }
 

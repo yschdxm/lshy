@@ -12,21 +12,22 @@
 ## 本地开发
 
 ```bash
-# 后端
+# 后端（端口在 .env 的 HOST/PORT 中配置，默认 127.0.0.1:8000）
 cd backend
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env   # 填入各 API Key
-uvicorn app.main:app --reload --port 8000
+python -m app.main     # 或 uvicorn app.main:app --reload --port 8000（命令行参数优先）
 
-# 前端
+# 前端（默认端口 3000；改端口用 `pnpm dev -- -p 3001` 或 shell 环境变量 PORT，
+#         写在 .env.local 里的 PORT 不会被 Next.js 读取）
 cd frontend
 cp .env.local.example .env.local
 pnpm install
 pnpm dev
 ```
 
-所有第三方密钥（LLM / TTS / 绘图 / 高德 / 讯飞数字人）只配置在 `backend/.env`，前端不持有任何密钥。
+所有第三方密钥（LLM / TTS / 绘图 / 高德 / 讯飞数字人）只配置在 `backend/.env`，前端不持有任何密钥。前端连后端的地址由 `frontend/.env.local` 的 `NEXT_PUBLIC_API_URL` 控制。
 
 ## 生产部署（宝塔面板要点）
 

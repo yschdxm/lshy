@@ -29,7 +29,7 @@ export default function HomePage() {
 
       {/* Lingshan Grand Buddha scenic background */}
       <img
-        src="/背景底图.jpg"
+        src="/bg-main.jpg"
         alt=""
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 -z-20 h-full w-full object-cover object-[8%_20%] opacity-85"

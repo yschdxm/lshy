@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { ChevronRight, Flame, Megaphone, Cloud, CloudRain, Thermometer } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -81,14 +82,15 @@ export function RightPanelLive() {
         <ul className="flex flex-col gap-3">
           {HIGHLIGHT_SPOTS.map((s) => (
             <li key={s.name}>
-              <a href={`/guide?spot=${encodeURIComponent(s.name)}`} className="group flex w-full items-center gap-3 rounded-2xl p-2 text-left transition-colors hover:bg-secondary">
+              {/* 必须用 Link：普通 <a> 会整页刷新，导致全局数字人连接被销毁重建 */}
+              <Link href={`/guide?spot=${encodeURIComponent(s.name)}`} className="group flex w-full items-center gap-3 rounded-2xl p-2 text-left transition-colors hover:bg-secondary">
                 <img src={s.image} alt={s.name} className="size-12 shrink-0 rounded-full object-cover" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-foreground">{s.name}</p>
                   <p className="truncate text-xs text-muted-foreground">{s.desc}</p>
                 </div>
                 <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-colors group-hover:text-primary" />
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

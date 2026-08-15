@@ -13,6 +13,57 @@ const STYLE_COLORS: Record<string, { border: string; bg: string; text: string; m
   cartoon:    { border: '#8cc88c', bg: '#fffef5', text: '#5a6a4a', muted: '#8a9a6a', seal: '#f09050' },
 }
 
+// 每种风格的专属装饰纹理（覆盖在卡片背景上、内容之下）
+const STYLE_DECOR: Record<string, React.CSSProperties> = {
+  // 国风：四角宣纸晕染 + 祥云感
+  guofeng: {
+    backgroundImage:
+      'radial-gradient(circle at 6% 6%, rgba(197,165,90,0.18) 0, transparent 34%),' +
+      'radial-gradient(circle at 94% 94%, rgba(197,165,90,0.18) 0, transparent 34%),' +
+      'repeating-linear-gradient(45deg, rgba(197,165,90,0.05) 0 2px, transparent 2px 14px)',
+  },
+  // 水彩：柔和色块晕染
+  watercolor: {
+    backgroundImage:
+      'radial-gradient(ellipse at 15% 20%, rgba(122,184,212,0.20) 0, transparent 45%),' +
+      'radial-gradient(ellipse at 85% 30%, rgba(212,144,160,0.16) 0, transparent 40%),' +
+      'radial-gradient(ellipse at 50% 90%, rgba(160,200,170,0.16) 0, transparent 45%)',
+  },
+  // 复古：做旧颗粒 + 泛黄边角
+  vintage: {
+    backgroundImage:
+      'radial-gradient(ellipse at 0% 0%, rgba(138,117,96,0.22) 0, transparent 40%),' +
+      'radial-gradient(ellipse at 100% 100%, rgba(138,117,96,0.22) 0, transparent 40%),' +
+      'repeating-radial-gradient(circle at 50% 50%, rgba(138,117,96,0.04) 0 1px, transparent 1px 4px)',
+  },
+  // 夜景：星空
+  night: {
+    backgroundImage:
+      'radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.9) 50%, transparent 51%),' +
+      'radial-gradient(1.5px 1.5px at 32% 8%, rgba(255,255,255,0.7) 50%, transparent 51%),' +
+      'radial-gradient(1px 1px at 58% 14%, rgba(255,255,255,0.8) 50%, transparent 51%),' +
+      'radial-gradient(1px 1px at 78% 26%, rgba(232,200,96,0.9) 50%, transparent 51%),' +
+      'radial-gradient(1.5px 1.5px at 90% 10%, rgba(255,255,255,0.6) 50%, transparent 51%),' +
+      'radial-gradient(1px 1px at 44% 30%, rgba(255,255,255,0.5) 50%, transparent 51%),' +
+      'radial-gradient(1px 1px at 22% 34%, rgba(232,200,96,0.6) 50%, transparent 51%),' +
+      'radial-gradient(ellipse at 85% 85%, rgba(74,106,154,0.35) 0, transparent 55%)',
+  },
+  // 卡通：波点
+  cartoon: {
+    backgroundImage:
+      'radial-gradient(4px 4px at 10% 12%, rgba(240,144,80,0.18) 50%, transparent 51%),' +
+      'radial-gradient(4px 4px at 30% 28%, rgba(140,200,140,0.18) 50%, transparent 51%),' +
+      'radial-gradient(4px 4px at 70% 10%, rgba(240,144,80,0.14) 50%, transparent 51%),' +
+      'radial-gradient(4px 4px at 90% 30%, rgba(140,200,140,0.16) 50%, transparent 51%),' +
+      'radial-gradient(4px 4px at 50% 45%, rgba(240,144,80,0.10) 50%, transparent 51%)',
+  },
+}
+
+// 复古风格的外框用虚线模拟邮票齿孔
+const STYLE_OUTER_BORDER: Record<string, string> = {
+  vintage: 'dashed',
+}
+
 export function PostcardPreview({ sceneImage, sceneName, title, message, signature, date, aiBg, style = 'guofeng', portrait = false }: PostcardPreviewProps) {
   const C = STYLE_COLORS[style] || STYLE_COLORS.guofeng
 
@@ -21,8 +72,11 @@ export function PostcardPreview({ sceneImage, sceneName, title, message, signatu
       className={`relative w-full overflow-hidden rounded-lg ${portrait ? 'aspect-[3/4]' : 'aspect-[1.6/1]'}`}
       style={{ backgroundColor: C.bg, maxWidth: portrait ? '320px' : '100%', margin: portrait ? '0 auto' : '0' }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-lg border-2" style={{ borderColor: C.border }}>
+      <div className="relative h-full w-full overflow-hidden rounded-lg border-2" style={{ borderColor: C.border, borderStyle: STYLE_OUTER_BORDER[style] || 'solid' }}>
         <div className="pointer-events-none absolute inset-1.5 z-20 rounded-md border opacity-60" style={{ borderColor: C.border }} />
+
+        {/* 风格装饰纹理层 */}
+        <div className="pointer-events-none absolute inset-0 z-10" style={STYLE_DECOR[style]} aria-hidden="true" />
 
         {aiBg && (
           <div className="absolute inset-0 z-10" style={{ backgroundImage: `url(${aiBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }} aria-hidden="true" />

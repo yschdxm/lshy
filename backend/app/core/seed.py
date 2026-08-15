@@ -150,6 +150,9 @@ def init_seed_data(db: Session):
     ]
 
     # ==================== 数字人配置 ====================
+    # 注意：avatar_id / vcn 是演示占位值。接入讯飞数字人前，必须到
+    # 交互平台-接口服务-形象列表/声音列表 中获取你自己账号已授权的 ID，
+    # 然后在管理端「数字人配置」中替换，否则服务端会报 11200 avatar authentication failed
     digital_humans = [
         DigitalHumanConfig(
             name="灵儿",

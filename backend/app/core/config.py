@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     app_version: str = "1.0.0"
     debug: bool = True
 
+    # ---- 服务监听（python -m app.main 启动时生效；uvicorn CLI 参数优先）----
+    host: str = "127.0.0.1"
+    port: int = 8000
+
     # ---- 安全（生产环境配置）----
     # 允许的跨域来源，逗号分隔，如 "https://example.com"；开发期可用 "*"
     cors_origins: str = "*"

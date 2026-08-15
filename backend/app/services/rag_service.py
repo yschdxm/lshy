@@ -34,6 +34,16 @@ try:
     import chromadb
     from chromadb.config import Settings as ChromaSettings
     HAS_CHROMADB = True
+
+    # chromadb 新版 + posthog 3+ 不兼容：即使 anonymized_telemetry=False，
+    # 其遥测客户端仍会调用 posthog.capture(...) 并因签名变化报
+    # "capture() takes 1 positional argument but 3 were given"。
+    # 这里直接把遥测上报替换为 no-op（本项目不需要匿名统计）。
+    try:
+        from chromadb.telemetry.product.posthog import Posthog as _ChromaPosthog
+        _ChromaPosthog.capture = lambda self, event: None  # type: ignore[method-assign]
+    except Exception:
+        pass
 except ImportError:
     HAS_CHROMADB = False
     logger.warning("ChromaDB 未安装，使用关键词检索")

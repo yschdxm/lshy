@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -18,12 +19,13 @@ export function HeroBanner() {
         <p className="mt-3 text-sm leading-relaxed text-slate-600 text-pretty">
           智能科技与人文风景的完美融合，让每一次旅行都更省心、更精彩。
         </p>
-        <a href="/qa">
+        {/* 必须用 Link：普通 <a> 会整页刷新，导致全局数字人连接被销毁重建 */}
+        <Link href="/qa">
           <Button className="mt-6 rounded-full px-5 shadow-md">
             立即探索
             <ArrowRight className="size-4" />
           </Button>
-        </a>
+        </Link>
       </div>
     </div>
   )

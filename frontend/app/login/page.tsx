@@ -120,7 +120,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-gradient-to-b from-sky-200 via-sky-100 to-oklch(0.93 0.04 235)" />
       <div
         className="absolute inset-0 bg-cover bg-center opacity-85"
-        style={{ backgroundImage: 'url(/背景底图.jpg)' }}
+        style={{ backgroundImage: 'url(/bg-main.jpg)' }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-sky-100/40 via-background/50 to-background/80" />
 
@@ -128,7 +128,7 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* 品牌区 */}
         <div className="mb-6 text-center">
-          <img src="/灵境云游_logo_透明底_裁切版.png" alt="灵境云游" className="mx-auto h-32 drop-shadow-[0_4px_12px_rgb(56,132,222,0.2)]" />
+          <img src="/logo-full.png" alt="灵境云游" className="mx-auto h-32 drop-shadow-[0_4px_12px_rgb(56,132,222,0.2)]" />
         </div>
 
         {/* 主卡片 */}

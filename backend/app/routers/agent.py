@@ -159,7 +159,10 @@ async def graph_visualize(query: str = ""):
     """返回知识图谱子图数据供前端可视化"""
     from neo4j import GraphDatabase
     from app.core.config import settings
-    driver = GraphDatabase.driver(settings.neo4j_uri, auth=(settings.neo4j_user, settings.neo4j_password))
+    try:
+        driver = GraphDatabase.driver(settings.neo4j_uri, auth=(settings.neo4j_user, settings.neo4j_password))
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Neo4j 驱动初始化失败: {e}")
     try:
         with driver.session() as s:
             if query:
@@ -188,6 +191,12 @@ async def graph_visualize(query: str = ""):
                     nodes[tgt] = {"name": tgt, "type": row["ttype"]}
                 edges.append({"source": src, "target": tgt, "relation": row["rel"], "distance": row.get("dist")})
             return {"nodes": list(nodes.values()), "edges": edges, "count": len(nodes)}
+    except HTTPException:
+        raise
+    except Exception as e:
+        # 直接暴露 Neo4j 连接/查询的真实错误（连接拒绝、认证失败等），
+        # 走 HTTPException 还能让响应带上 CORS 头，避免浏览器误报 CORS
+        raise HTTPException(status_code=503, detail=f"Neo4j 不可用({settings.neo4j_uri}): {type(e).__name__}: {e}")
     finally:
         driver.close()
 

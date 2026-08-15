@@ -100,7 +100,7 @@ export function TopHeader() {
     <>
       <header className="relative flex flex-wrap items-center justify-between gap-4 bg-gradient-to-b from-sky-200/90 via-sky-100/60 to-transparent px-6 py-4 lg:px-10">
         <div className="flex items-center gap-3">
-          <img src="/灵境云游_logo_透明底_裁切版 - 单logo图.png" alt="灵境云游" className="h-10" />
+          <img src="/logo-mark.png" alt="灵境云游" className="h-10" />
           <div className="leading-tight">
             <h1 className="text-xl font-bold text-foreground">灵境云游</h1>
             <p className="text-xs tracking-wide text-muted-foreground">智慧景区服务平台</p>
