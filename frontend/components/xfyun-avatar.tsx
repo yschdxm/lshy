@@ -10,7 +10,7 @@ import { getXfyunAuth } from '@/lib/api'
 // vcn 留空表示使用该形象在平台配置的默认发音人）
 const FALLBACK_CHARACTERS = {
   female: { avatar_id: '111322001', vcn: 'x4_lingxiaoyue_oral', label: '舒窈·唐装女生' },
-  male:   { avatar_id: '111140001', vcn: '', label: '风屿' },
+  male:   { avatar_id: '111140001', vcn: 'x4_lingfeizhe_oral', label: '风屿' },
 }
 
 // 全局状态同步

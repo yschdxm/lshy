@@ -152,7 +152,7 @@ def init_seed_data(db: Session):
     # ==================== 数字人配置 ====================
     # avatar_id / vcn 对应讯飞交互平台已授权形象：
     #   女 = 舒窈·唐装女生 111322001 / x4_lingxiaoyue_oral
-    #   男 = 风屿 111140001（vcn 留空 = 形象默认发音人）
+    #   男 = 风屿 111140001 / x4_lingfeizhe_oral
     # 如平台授权有变，在管理端「数字人配置」中修改即可（seed 只在空库时填充一次）
     digital_humans = [
         DigitalHumanConfig(
@@ -177,7 +177,7 @@ def init_seed_data(db: Session):
             avatar_style="现代学者",
             voice_name="风屿·男声",
             avatar_id="111140001",
-            vcn="",
+            vcn="x4_lingfeizhe_oral",
             gender="男",
             image_url="/avatar.png",
             scenes='["首页导览","景点讲解","智能问答"]',
