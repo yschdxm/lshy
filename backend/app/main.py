@@ -21,6 +21,12 @@ from app.routers import system, spots, knowledge, digital_human, tourist, ai, ro
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用启动：自动建表 + 填充种子数据 + 注册 Agent 工具"""
+    # 确保数据目录存在（全新部署/CI 环境下 data/ 不会入库，SQLite 不会自动建父目录）
+    from pathlib import Path
+    from app.core.config import BASE_DIR
+    Path(BASE_DIR / "data").mkdir(parents=True, exist_ok=True)
+    Path(settings.chroma_persist_dir).mkdir(parents=True, exist_ok=True)
+
     Base.metadata.create_all(bind=engine)
 
     # 种子数据：仅当表为空时填充
