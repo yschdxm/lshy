@@ -1,14 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Noto_Sans_SC } from 'next/font/google'
+// 自托管字体（npm 包内 woff2），构建无需访问 Google Fonts —— 国内服务器可直接构建
+import '@fontsource-variable/noto-sans-sc'
 import './globals.css'
-
-const notoSansSC = Noto_Sans_SC({
-  subsets: ['latin'],
-  weight: ['400', '500', '700', '900'],
-  variable: '--font-noto-sans-sc',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: '灵境云游 | 智慧景区服务平台',
@@ -27,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" className={`light ${notoSansSC.variable}`}>
+    <html lang="zh-CN" className="light">
       <body className="bg-background font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

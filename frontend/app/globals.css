@@ -4,6 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  /* 自托管 Noto Sans SC 可变字体（@fontsource-variable，见 layout.tsx） */
+  --font-noto-sans-sc: 'Noto Sans SC Variable', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
 @theme inline {
   --font-sans: var(--font-noto-sans-sc), ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
