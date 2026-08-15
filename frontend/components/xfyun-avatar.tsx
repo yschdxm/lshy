@@ -6,10 +6,11 @@ import { Loader2, VolumeX, Volume2, RefreshCw, Moon, Venus, Mars } from 'lucide-
 // 讯飞数字人凭证由后端签名接口下发（apiSecret 不进浏览器）
 import { getXfyunAuth } from '@/lib/api'
 
-// 默认兜底配置
+// 默认兜底配置（avatar_id 以讯飞交互平台"形象列表"中已授权的为准；
+// vcn 留空表示使用该形象在平台配置的默认发音人）
 const FALLBACK_CHARACTERS = {
-  female: { avatar_id: '111322001', vcn: 'x4_lingxiaoyu_assist', label: '舒窈·女声' },
-  male:   { avatar_id: '111140001', vcn: 'x4_lingfeizhe_oral', label: '风屿·男声' },
+  female: { avatar_id: '111322001', vcn: 'x4_lingxiaoyue_oral', label: '舒窈·唐装女生' },
+  male:   { avatar_id: '111141001', vcn: '', label: '风晏' },
 }
 
 // 全局状态同步

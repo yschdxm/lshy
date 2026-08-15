@@ -150,16 +150,17 @@ def init_seed_data(db: Session):
     ]
 
     # ==================== 数字人配置 ====================
-    # 注意：avatar_id / vcn 是演示占位值。接入讯飞数字人前，必须到
-    # 交互平台-接口服务-形象列表/声音列表 中获取你自己账号已授权的 ID，
-    # 然后在管理端「数字人配置」中替换，否则服务端会报 11200 avatar authentication failed
+    # avatar_id / vcn 对应讯飞交互平台已授权形象：
+    #   女 = 舒窈·唐装女生 111322001 / x4_lingxiaoyue_oral
+    #   男 = 风晏 111141001（vcn 留空 = 形象默认发音人）
+    # 如平台授权有变，在管理端「数字人配置」中修改即可（seed 只在空库时填充一次）
     digital_humans = [
         DigitalHumanConfig(
             name="灵儿",
             avatar_style="古风少女",
-            voice_name="舒窈·女声",
+            voice_name="舒窈·唐装女生",
             avatar_id="111322001",
-            vcn="x4_lingxiaoyu_assist",
+            vcn="x4_lingxiaoyue_oral",
             gender="女",
             image_url="/digital-human.png",
             scenes='["首页导览","景点讲解","智能问答","路线推荐"]',
@@ -174,9 +175,9 @@ def init_seed_data(db: Session):
         DigitalHumanConfig(
             name="灵风",
             avatar_style="现代学者",
-            voice_name="风屿·男声",
-            avatar_id="111140001",
-            vcn="x4_lingfeizhe_oral",
+            voice_name="风晏",
+            avatar_id="111141001",
+            vcn="",
             gender="男",
             image_url="/avatar.png",
             scenes='["首页导览","景点讲解","智能问答"]',
