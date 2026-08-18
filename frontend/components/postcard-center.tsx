@@ -212,7 +212,7 @@ export function PostcardCenter() {
     setAiLoading(true)
     try {
       const sid = localStorage.getItem('last_session_id') || 'postcard_demo'
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/souvenir/generate`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/souvenir/generate`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sid }),
       })

@@ -52,7 +52,7 @@ export function TopHeader() {
   }, [])
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/service/weather?city=320200`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/service/weather?city=320200`)
       .then(r => r.json())
       .then(d => {
         if (d.temperature) setWeather({ temp: d.temperature, desc: d.weather || '多云' })

@@ -19,7 +19,7 @@ const CATEGORIES = [
 interface Facility { name: string; type: string; location: string; address: string; distance: string; tel: string }
 
 async function fetchNearby(type: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/service/nearby`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/service/nearby`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ facility_type: type, radius: 1000 }),
   })
@@ -27,7 +27,7 @@ async function fetchNearby(type: string) {
 }
 
 async function fetchWalking(origin: string, dest: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/service/walking`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/service/walking`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ origin, destination: dest }),
   })

@@ -1,7 +1,7 @@
 /**
  * 认证 API 客户端
  */
-const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 function getToken(): string | null {
   try { return localStorage.getItem('token') } catch { return null }

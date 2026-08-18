@@ -65,7 +65,7 @@ let configsPromise: Promise<DhConfig[]> | null = null
 function fetchDhConfigs(): Promise<DhConfig[]> {
   if (configsCache) return Promise.resolve(configsCache)
   if (!configsPromise) {
-    configsPromise = fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/digital-human?page_size=100`)
+    configsPromise = fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/digital-human?page_size=100`)
       .then(r => r.json())
       .then(d => { configsCache = d.items || []; return configsCache! })
       .catch(() => [])
@@ -274,7 +274,7 @@ export function XfyunAvatar({ onReady, onError, message }: Props) {
 
   // 加载管理员端配置的活动数字人
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/digital-human/active`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/digital-human/active`)
       .then(r => r.json())
       .then(c => {
         if (c.avatar_id) {

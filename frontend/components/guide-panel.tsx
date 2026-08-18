@@ -63,7 +63,7 @@ export function GuidePanel({
   useEffect(() => {
     let cancelled = false
     setRelatedLoading(true)
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/agent/graph-visualize?query=${encodeURIComponent(spotName)}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/agent/graph-visualize?query=${encodeURIComponent(spotName)}`)
       .then(r => r.json())
       .then(data => {
         if (cancelled) return

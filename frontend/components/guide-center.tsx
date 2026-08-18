@@ -185,7 +185,7 @@ export function GuideCenter({ onStateChange, externalSpot }: CenterProps) {
 
     let text = ''
     try {
-      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/agent/chat`, {
+      const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/agent/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: 'guide_center', message: question }),

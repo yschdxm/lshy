@@ -3,11 +3,24 @@
 使用 pydantic-settings 从 .env 文件和环境变量加载配置
 答辩要点：集中管理所有配置，方便切换不同环境和模型
 """
+import sys
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-# 项目根目录（backend/app/core/config.py → backend/）
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# 项目根目录：PyInstaller 冻结后为 exe 所在目录，开发时为 backend/
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys.executable).resolve().parent
+else:
+    BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# 前端静态文件目录（冻结时为 PyInstaller 解压目录中打包的 frontend/out）
+if getattr(sys, "frozen", False):
+    STATIC_DIR = Path(sys._MEIPASS) / "static"  # type: ignore[attr-defined]
+else:
+    STATIC_DIR = BASE_DIR.parent / "frontend" / "out"
+
+# 随 exe 打包的初始数据目录（SQLite 库 / chroma 向量库），首次运行时释放到 exe 同级 data/
+INITIAL_DATA_DIR = Path(sys._MEIPASS) / "data_initial" if getattr(sys, "frozen", False) else None  # type: ignore[attr-defined]
 
 
 class Settings(BaseSettings):
@@ -73,7 +86,8 @@ class Settings(BaseSettings):
     jwt_secret: str = "change-me-in-production"  # 生产环境务必通过 .env 覆盖
 
     class Config:
-        env_file = ".env"
+        # 开发时为 backend/.env；冻结后为 exe 旁的 .env
+        env_file = str(BASE_DIR / ".env")
         env_file_encoding = "utf-8"
 
 

@@ -16,7 +16,7 @@ let pendingFetch: Promise<boolean> | null = null
 
 function checkXfyunEnabled(): Promise<boolean> {
   if (!pendingFetch) {
-    pendingFetch = fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/digital-human/active`)
+    pendingFetch = fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/digital-human/active`)
       .then((r) => r.json())
       .then((cfg) => { cachedUseXfyun = !!cfg.avatar_id; return cachedUseXfyun })
       .catch(() => { cachedUseXfyun = false; return false })

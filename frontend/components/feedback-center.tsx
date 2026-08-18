@@ -177,7 +177,7 @@ export function FeedbackCenter() {
             onClick={async () => {
               setSubmitting(true)
               try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/feedback`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/feedback`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({

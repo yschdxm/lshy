@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 import json, logging
 
 from app.core.database import get_db
+from app.core.config import BASE_DIR
 from app.models.scenic_spot import ScenicSpot
 from app.models.knowledge_document import KnowledgeDocument
 from app.models.chat_record import ChatRecord
@@ -670,7 +671,7 @@ import os
 @router.get("/behavior/stats")
 async def behavior_stats():
     """返回 Excel 预聚合的游客行为统计数据"""
-    stats_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "behavior_stats.json")
+    stats_path = str(BASE_DIR / "data" / "behavior_stats.json")
     try:
         with open(stats_path, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -681,7 +682,7 @@ async def behavior_stats():
 @router.get("/behavior/export")
 async def behavior_export():
     """导出行为统计数据为 Excel"""
-    stats_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "behavior_stats.json")
+    stats_path = str(BASE_DIR / "data" / "behavior_stats.json")
     if not os.path.exists(stats_path):
         raise HTTPException(404, "统计数据未生成")
 
@@ -826,7 +827,7 @@ async def behavior_upload(file: UploadFile):
             'updated_at': datetime.utcnow().isoformat(),
         }
 
-        stats_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "behavior_stats.json")
+        stats_path = str(BASE_DIR / "data" / "behavior_stats.json")
         os.makedirs(os.path.dirname(stats_path), exist_ok=True)
         with open(stats_path, "w", encoding="utf-8") as f:
             json.dump(r, f, ensure_ascii=False)
@@ -1317,9 +1318,9 @@ async def clear_cache():
     import shutil, os
     cleaned = []
     # 清理 ChromaDB 缓存（保留索引）
-    chroma_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "chroma_db")
+    chroma_dir = os.path.join(str(BASE_DIR), "chroma_db")
     # 清理临时文件
-    tmp_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "tmp")
+    tmp_dir = os.path.join(str(BASE_DIR), "tmp")
     for d in [tmp_dir]:
         if os.path.exists(d):
             try:

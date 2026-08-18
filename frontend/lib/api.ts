@@ -2,7 +2,7 @@
  * 灵境云游 — API 客户端
  * 连接 FastAPI 后端 (localhost:8000)
  */
-const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 /** 从 localStorage 获取 token */
 function getToken(): string | null {

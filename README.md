@@ -41,3 +41,26 @@ pnpm dev
    - `CORS_ORIGINS=https://你的域名`
 5. Neo4j 可选：小内存服务器（≤4G）建议不装或用 AuraDB 云端版，仅影响 GraphRAG 增强功能
 6. 备份：宝塔计划任务每日打包 `backend/data/lingshan.db` 和 `backend/data/chroma/`
+
+## 打包为单机 exe（内嵌前端，免部署）
+
+前端已配置 `output: 'export'` 静态导出，后端冻结后由 FastAPI 直接托管前端，最终产物为单个 exe。
+
+```bash
+# 1. 前端静态导出（NEXT_PUBLIC_API_URL 置空 → API 走同源）
+cd frontend
+$env:NEXT_PUBLIC_API_URL=''   # PowerShell；bash: NEXT_PUBLIC_API_URL= pnpm build
+pnpm build                    # 产物在 frontend/out/
+
+# 2. 后端打包（PyInstaller，配置在 backend/lingshan.spec）
+cd backend
+.venv/Scripts/python.exe -m PyInstaller lingshan.spec --clean --noconfirm
+# 产物：backend/dist/lingshan.exe（约 150 MB）
+```
+
+分发：把 `lingshan.exe` 和 `.env`（填入各 API Key）放同一目录，双击运行——
+**直接弹出桌面应用窗口（WebView2 内核，Win10/11 自带运行时，无需浏览器）**，
+窗口标题为"灵山慧游"，关闭窗口即退出程序。监听端口由 `.env` 的 PORT 决定。
+首次运行会把随包的 SQLite 库 / chroma 向量库释放到 exe 同级 `data/`，后续数据都读写该目录。
+运行日志写入 exe 同级 `lingshan.log`（无控制台窗口，排错看此文件）。
+开发时也可用 `python -m app.main --desktop` 体验桌面窗口模式。

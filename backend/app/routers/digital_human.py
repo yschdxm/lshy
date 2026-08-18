@@ -4,11 +4,12 @@
 """
 import os
 import shutil
+import sys
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from sqlalchemy.orm import Session
 from typing import Optional
 
-from app.core.config import settings
+from app.core.config import settings, BASE_DIR
 from app.core.database import get_db
 from app.models.digital_human_config import DigitalHumanConfig
 from app.schemas.digital_human_config import (
@@ -20,10 +21,14 @@ from app.schemas.common import PaginatedResponse
 
 router = APIRouter(prefix="/api/digital-human", tags=["数字人配置"])
 
-# 形象照上传目录（默认 <仓库根目录>/frontend/public/avatars，可用环境变量 UPLOAD_DIR 覆盖）
-_DEFAULT_UPLOAD_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..", "frontend", "public", "avatars")
-)
+# 形象照上传目录（默认 <仓库根目录>/frontend/public/avatars，可用环境变量 UPLOAD_DIR 覆盖；
+# PyInstaller 冻结后 frontend 静态目录只读，落到 exe 同级 data/avatars）
+if getattr(sys, "frozen", False):
+    _DEFAULT_UPLOAD_DIR = str(BASE_DIR / "data" / "avatars")
+else:
+    _DEFAULT_UPLOAD_DIR = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..", "frontend", "public", "avatars")
+    )
 UPLOAD_DIR = settings.upload_dir or _DEFAULT_UPLOAD_DIR
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 

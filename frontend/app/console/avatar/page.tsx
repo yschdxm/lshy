@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 
 const TABS = ['全部', '使用中', '已停用'] as const
 const SCENE_OPTIONS = ['首页导览', '景点讲解', '智能问答', '路线推荐', '便民服务']
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 export default function AvatarPage() {
   const [list, setList] = useState<DigitalHumanItem[]>([])

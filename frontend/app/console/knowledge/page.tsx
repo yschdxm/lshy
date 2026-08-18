@@ -376,7 +376,7 @@ export default function KnowledgePage() {
       const formData = new FormData()
       formData.append('file', file)
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
         const res = await fetch(`${apiUrl}/api/knowledge/parse-file`, {
           method: 'POST', body: formData,
         })

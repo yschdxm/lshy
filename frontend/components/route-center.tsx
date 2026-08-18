@@ -101,7 +101,7 @@ export function RouteCenter({ onRouteResult, onQuestionClick, onPresetRef }: Pro
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
       const headers: Record<string,string> = { 'Content-Type': 'application/json' }
       if (token) headers['Authorization'] = `Bearer ${token}`
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/routes/recommend`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/routes/recommend`, {
         method: 'POST', headers,
         body: JSON.stringify({
           duration: TIME_MAP[snapshot.time] || '半日',

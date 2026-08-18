@@ -3,6 +3,9 @@ fastapi==0.115.0
 uvicorn[standard]==0.30.0
 python-multipart==0.0.9
 
+# ===== 桌面窗口（exe 双击直接出界面，WebView2 内核，Win10/11 自带运行时）=====
+pywebview==6.2.1
+
 # ===== 数据库 / 配置 =====
 sqlalchemy==2.0.35
 pydantic==2.9.0

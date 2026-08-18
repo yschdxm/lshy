@@ -1,7 +1,7 @@
 /**
  * 管理后台 API 客户端
  */
-const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 function getToken(): string | null {
   try { return localStorage.getItem('token') } catch { return null }
@@ -234,7 +234,7 @@ export async function uploadBehaviorExcel(file: File) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
   const headers: Record<string,string> = {}
   if (token) headers['Authorization'] = `Bearer ${token}`
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/admin/behavior/upload`, { method: 'POST', headers, body: form })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/admin/behavior/upload`, { method: 'POST', headers, body: form })
   if (!res.ok) { const d = await res.json().catch(()=>({detail:'Upload failed'})); throw new Error(d.detail) }
   return res.json()
 }

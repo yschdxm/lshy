@@ -50,7 +50,7 @@ export default function BehaviorPage() {
     : null
 
   const handleExport = () => {
-    const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+    const BASE = process.env.NEXT_PUBLIC_API_URL || ''
     window.open(`${BASE}/api/admin/behavior/export`, '_blank')
   }
 

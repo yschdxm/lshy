@@ -45,7 +45,7 @@ export function QaChatLive({ onSendReady, onStateChange }: Props) {
       const headers: Record<string,string> = {}
       const token = localStorage.getItem('token')
       if (token) headers['Authorization'] = `Bearer ${token}`
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/ai/history?session_id=${sessionId}&limit=50`, { headers })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/ai/history?session_id=${sessionId}&limit=50`, { headers })
       const data = await res.json()
       setHistoryItems(data.items || [])
     } catch { setHistoryItems([]) }
@@ -81,7 +81,7 @@ export function QaChatLive({ onSendReady, onStateChange }: Props) {
 
   // 检测讯飞数字人是否活动（决定是否显示 Web TTS 音色选择器）
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/digital-human/active`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/digital-human/active`)
       .then(r => r.json())
       .then(cfg => setDhEnabled(!!cfg.avatar_id))
       .catch(() => setDhEnabled(false))
